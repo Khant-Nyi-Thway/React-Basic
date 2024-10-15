@@ -1,0 +1,77 @@
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Post from "./components/Post";
+import AddPost from "./components/AddPost";
+import PostDetail from "./components/PostDetail";
+
+function App() {
+  const DB_Name = "post_DB"; 
+  const [posts, setPosts] = useState([]); 
+
+  // Add new post to the posts array
+  let addPost_fn = (post) => {
+    setPosts([post, ...posts]); // Add new post to the beginning of the array
+  };
+
+  
+  // Fetch data from localStorage on the initial load
+  useEffect(() => {
+    let data = localStorage.getItem(DB_Name); 
+    if (data) {
+      setPosts(JSON.parse(data)); 
+    }
+  }, []); // Only run this effect on component mount
+
+
+  // Update localStorage whenever the posts state changes, even if it's empty
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      localStorage.setItem(DB_Name, JSON.stringify(posts));
+    }
+  }, [posts, DB_Name]);
+
+
+
+  // Delete 
+  const postDeleteHandler = (id) => {
+    // Get the current posts from localStorage
+    let storedPosts = JSON.parse(localStorage.getItem("post_DB")) || [];
+  
+    // Filter out the post by id
+    const updatedPosts = storedPosts.filter(post => post.id !== id);
+  
+    // Update the posts state
+    setPosts(updatedPosts);
+  
+    // If there are no more posts, still update localStorage to reflect an empty array
+    if (updatedPosts.length === 0) {
+      localStorage.setItem("post_DB", JSON.stringify([])); // Set to an empty array in localStorage
+    } else {
+      // Otherwise, update localStorage with the new array
+      localStorage.setItem("post_DB", JSON.stringify(updatedPosts));
+    }
+  };
+
+
+  
+  return (
+    <div className="container">
+      <h1 className="text-center text-info my-3">Posts</h1>
+      
+      <Router>
+        <Routes>
+          <Route path="/" element={<Post posts={posts} removePost={postDeleteHandler} />} />
+          
+          <Route path="/add" element={<AddPost addpost={addPost_fn} />} />
+
+          <Route path="/post/:id" element={<PostDetail  />} />
+
+        </Routes>
+      </Router>
+
+       
+    </div>
+  );
+}
+
+export default App;

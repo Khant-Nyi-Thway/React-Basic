@@ -1,0 +1,19 @@
+{
+  "posts": [
+    {
+      "id": "8c7b",
+      "title": "post 1 final",
+      "desc": "Desc 1 final"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
