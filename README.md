@@ -11,9 +11,9 @@ import {Link} from 'react-router-dom'
 // installing json server
 
 npm install -g json-server
-json-server --watch db.json --port 9000
+json-server --watch db.json
 yarn add json-server
-
+yarn serve
 ===========================================
 npm install -g create-react-app {if error}
 npx create-react-app <appname> {start here}
